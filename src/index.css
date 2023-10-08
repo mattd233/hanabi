@@ -1,7 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url(https://fonts.googleapis.com/css?family=Khula:700);
+
+@font-face {
+  font-family: 'FZYouHei';
+  src: url("assets/FZYouHeiSC.ttf");
+}
+
 
 @layer base {
   html {

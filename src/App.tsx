@@ -13,21 +13,12 @@ const App: Component = () => {
   return (
     <>
       <div class="w-screen h-screen overflow-hidden flex justify-center items-center">
-        {/* <Background play={play} />;
         <PlayButton onClick={handleClickPlay} />
-        {play() && renderTitle()} */}
-        {<Text />}
+        <Background play={play} />;
+        <Text play={play} />
       </div>
     </>
   );
 };
-
-function renderTitle() {
-  return (
-    <div class="text-gray-100 text-[70px] font-['HigherMonday'] z-10 title">
-      <h1>Happy Birthday 🎊</h1>
-    </div>
-  );
-}
 
 export default App;

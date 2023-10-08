@@ -1,3 +1,5 @@
 node_modules
 dist
-public/fireworks.mp4
+.env
+assets/fireworks.mp4
+assets/fireworks.m4a

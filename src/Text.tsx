@@ -1,57 +1,65 @@
-import { createSignal, onCleanup } from "solid-js";
+// source: https://codepen.io/Tbgse/pen/dYaJyJ
+import { createEffect, createSignal, onCleanup } from "solid-js";
 
-export default function Text() {
+interface Props {
+  play?: () => boolean;
+}
+
+export default function Text(props: Props) {
   const words = ["给最亲爱的小鱼", "生日快乐"];
-  const colors = ["text-indigo-500"];
+  const colors = ["text-indigo-500", "text-red-500"];
   const [text, setText] = createSignal("");
   const [color, setColor] = createSignal(0);
-  const [show, setShow] = createSignal(true);
+  const [show, setShow] = createSignal(false);
 
-  const showCursorInterval = setInterval(() => {
-    setShow(!show());
-  }, 400);
-
-  let wordIndex = 0;
-  let charCount = 0;
-  let reverse = false;
-  let waiting = false;
-  const showTextInterval = setInterval(() => {
-    console.log(wordIndex, charCount);
-    console.log(reverse);
-    console.log(words[wordIndex].substring(0, charCount + 1))
-
-    if (waiting) {
-      waiting = false;
-      return;
-    }
-
-    if (reverse) {
-      charCount--;
-      setText(words[wordIndex].substring(0, charCount + 1));
-
-      if (charCount === -1) {
-        const lastWord = wordIndex === words.length - 1;
-        reverse = false;
-        waiting = true;
-        if (lastWord) {
-          wordIndex = 0;
-          setText("");
-        } else {
-          wordIndex += 1;
-        }
-        setColor(wordIndex);
+  let showTextInterval;
+  let showCursorInterval;
+  const play = () => {
+    let x = 1;
+    let letterCount = 1;
+    let wordIndex = 0;
+    let waiting = false;
+    showTextInterval = setInterval(() => {
+      if (wordIndex === words.length-1 && letterCount === 0 && waiting === false) {
+        clearInterval(showTextInterval);
+        clearInterval(showCursorInterval);
+        setText("")
+        setShow(false);
       }
-      return;
-    }
+  
+      if (letterCount === 0 && waiting === false) {
+        waiting = true;
+        setText(words[wordIndex].substring(0, letterCount));
+        window.setTimeout(function () {
+          wordIndex++;
+          x = 1;
+          setColor(wordIndex);
+          letterCount += x;
+          waiting = false;
+        }, 1000);
+      } else if (letterCount === words[wordIndex].length + 1 && waiting === false) {
+        waiting = true;
+        window.setTimeout(function () {
+          x = -1;
+          letterCount += x;
+          waiting = false;
+        }, 1000);
+      } else if (waiting === false) {
+        setText(words[wordIndex].substring(0, letterCount));
+        letterCount += x;
+      }
+    }, 120);
 
-    charCount ++;
-    setText(words[wordIndex].substring(0, charCount + 1));
-    // reached end of word, make the word disappear
-    if (charCount === words[wordIndex].length) {
-      reverse = true;
-    }
+    showCursorInterval = setInterval(() => {
+      setShow(!show());
+    }, 400);
+  }
 
-  }, 300);
+  createEffect(() => {
+    if (props.play()) {
+      play();
+    }
+  });
 
   onCleanup(() => {
     clearInterval(showCursorInterval);
@@ -59,10 +67,10 @@ export default function Text() {
   });
 
   return (
-    <div class="font-['Khula'] text-6xl text-center h-[200px] w-[600px] absolute text-white inset-0 m-auto">
+    <div class="font-['FZYouHei'] text-6xl text-center h-[200px] w-[600px] absolute text-white inset-0 m-auto z-10">
       <span class={colors[color()]}>{text()}</span>
       <div
-        class="inline-block relative top-[-0.14em] left-[10px]"
+        class={`inline-block relative top-[-10px] left-[10px]`}
         classList={{
           "opacity-0": !show(),
         }}

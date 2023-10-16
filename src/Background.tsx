@@ -16,13 +16,6 @@ export default function Background(props: Props) {
     }
   });
 
-  createEffect(() => {
-    if (props.play()) {
-      video.play();
-      audio.play();
-    }
-  });
-
   onCleanup(() => {
     video.pause();
   });

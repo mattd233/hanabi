@@ -6,11 +6,11 @@ interface Props {
 }
 
 export default function Text(props: Props) {
-  const words = ["给最亲爱的小鱼", "生日快乐"];
-  const colors = ["text-indigo-500", "text-red-500"];
+  const words = ["给最亲爱的小鱼", "生日快乐", "请你看电子烟花", "一定要开心", "然后要健康", "还有就是", "爱你哟"];
+  const colors = ["text-indigo-500", "text-red-500","text-yellow-300", "text-purple-400", "text-green-500", "text-purple-500", "text-pink-300"];
   const [text, setText] = createSignal("");
   const [color, setColor] = createSignal(0);
-  const [show, setShow] = createSignal(false);
+  const [show, setShow] = createSignal(false);  
 
   let showTextInterval;
   let showCursorInterval;
